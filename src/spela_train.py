@@ -42,14 +42,11 @@ Notes:
 """
 
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Callable, Iterable, List, Optional, Sequence, Tuple
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
 
 @dataclass
 class SpelaConfig:
@@ -67,21 +64,17 @@ class SpelaConfig:
     embeddings_candidates: int = 2048     # for farthest method
     seed: Optional[int] = None
 
-
 def _resolve_device_dtype(device: Optional[torch.device], dtype: Optional[torch.dtype]) -> Tuple[torch.device, Optional[torch.dtype]]:
     dev = device if device is not None else (torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu"))
     return dev, dtype
-
 
 def _flatten_features(x: torch.Tensor) -> torch.Tensor:
     if x.dim() <= 2:
         return x
     return x.flatten(start_dim=1)
 
-
 def _normalize(x: torch.Tensor, dim: int = 1, eps: float = 1e-8) -> torch.Tensor:
     return F.normalize(x, p=2, dim=dim, eps=eps)
-
 
 @torch.no_grad()
 def generate_symmetric_vectors(num_classes: int, dim: int, method: str = "farthest", num_candidates: int = 2048,
@@ -134,7 +127,6 @@ def generate_symmetric_vectors(num_classes: int, dim: int, method: str = "farthe
 
     vecs = torch.stack(chosen_vecs, dim=0)
     return _normalize(vecs, dim=1)
-
 
 class SpelaTrainer:
     """
@@ -362,7 +354,6 @@ class SpelaTrainer:
                 acc = self.evaluate(val_loader, from_layer=-1)
             if log_fn is not None:
                 log_fn(e, loss, acc)
-
 
 __all__ = [
     "SpelaConfig",
