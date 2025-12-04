@@ -1,0 +1,6 @@
+# Core runtime dependencies for fast-ann-training
+
+torch>=2.1
+
+# Optional but commonly used with vision datasets (uncomment if needed)
+# torchvision>=0.16
