@@ -39,6 +39,20 @@ Notes:
   is a 1D feature vector per sample before loss (or provide a suitable activation
   that reduces to a vector, e.g., AdaptiveAvgPool and flatten). If not, set
   auto_flatten=True in the config to flatten to vectors automatically.
+
+One caveat in the current implementation (and how to handle it):
+
+The trainer initializes per‑layer symmetric vectors by probing layer output shapes.
+For CNN stacks, input shapes differ across layers (C,H,W change), so a single shared
+probe shape is not correct for deeper conv layers.
+
+Recommended fix: lazily create each layer’s symmetric vectors the first time you see
+its real activation during training (use h_out.flatten(1).shape[1] for D). That
+guarantees the right dimension regardless of conv strides/padding/pooling.
+
+Current code already defers initialization until the first batch, but it uses the
+same sample shape for all layers. Switching to per-layer lazy init on first forward
+would make CNN support robust.
 """
 
 from __future__ import annotations
