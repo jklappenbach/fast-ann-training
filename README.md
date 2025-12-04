@@ -9,13 +9,13 @@ What is here
 
 Requirements
 - Python 3.9+
-- PyTorch (see `requirements.txt`)
+- PyTorch (see requirements.txt)
 
 Quick start
 1) Create and activate a virtual environment
 ```
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
+source .venv/bin/activate 
 ```
 
 2) Install dependencies
